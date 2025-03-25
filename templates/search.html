@@ -11,11 +11,23 @@
             crossorigin="anonymous"></script>
     <!--Error Script for submitting-->
     <script>
-        function search() {
+        function checkSearch() {
             //Event Handler for search error
-            document.getElementById("formatError").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">\n"+
-            "<b>"+"I have no clue! Please search something else"+"\n"+"</b>"+
-            "</div>";
+            let searchItem = document.getElementById("wSearch").value;
+            //check to see if textbox is empty
+            if(searchItem === "") {
+                //if empty, page does not refresh onclick, and the bootstrap alert is triggered
+                document.getElementById("searchAction").setAttribute("onsubmit","return false")
+                document.getElementById("formatError").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">\n" +
+                    "<b>" + "Blank Search Box! Try again, with text..." + "\n" + "</b>" +
+                    "</div>";
+            } else {
+                //if not empty, onsubmit is potentially removed (if it had already been triggered
+                //then the action and method is added so we can get the result
+                document.getElementById("searchAction").removeAttribute("onsubmit")
+                document.getElementById("searchAction").setAttribute("action","/getResult")
+                document.getElementById("searchAction").setAttribute("method","post")
+            }
         }
     </script>
 </head>
@@ -23,15 +35,14 @@
 <div class="card">
     <div class="card-body">
         <h1 class="card-title">Wiki Search</h1>
-        <!--onsubmit returns false to avoid screen refreshing-->
-        <form onsubmit="return false">
+        <form id="searchAction">
             <div>
                 <div id="formatError"></div>
                 <label for="wSearch">Feeling Lucky?</label>
                 <input type="search" class="form-control" id="wSearch"
                        placeholder="Search here for people, objects, events, etc">
             </div>
-            <button type="submit" class="btn btn-primary" onclick="search()">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="checkSearch()">Submit</button>
         </form>
     </div>
 </div>

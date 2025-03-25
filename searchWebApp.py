@@ -6,7 +6,7 @@ app.config['ENV'] = "Development"
 app.config['DEBUG'] = True
 
 @app.route('/')
-def search():
+def searchHome():
     return render_template('search.html')
 
 if __name__ == '__main__':

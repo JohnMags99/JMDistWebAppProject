@@ -13,10 +13,10 @@ def searchHome():
 
 
 #Result Landing Page Function
-@app.route('/getResult', methods=['POST'])
+@app.route('/getResult', methods=['POST', 'GET'])
 def getResult():
     #Public IPv4 address on EC2 connect console, needs to be reviewed each time instance is stopped and started
-    instance_ip="51.20.12.44"
+    instance_ip="13.51.162.145"
     securityKeyFile="/home/johnm/DistWebAppProj.pem"
     searchTerm=request.form.get('wSearch')
     cmd="source wiki/wiki_env/bin/activate && python3 wiki.py"  #Activating venv before executing wiki.py
@@ -36,6 +36,10 @@ def getResult():
         output=stdout.readlines()
 
         #TODO Output to HTML instead of console
+        wiki_htmlView='''
+        
+        '''
+
         #Get result
         print("output: ",output)
         for items in output:
@@ -43,8 +47,11 @@ def getResult():
 
         #Close client connection when finished
         client.close()
+        return render_template('results.html', searchTerm=searchTerm, results=output)
     except Exception as e:
         print(e)
+        return render_template('results.html', searchTerm=searchTerm, results="Something went wrong, please try again...")
+
 
 
 if __name__ == '__main__':

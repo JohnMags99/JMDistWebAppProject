@@ -15,9 +15,9 @@
             //Event Handler for search error
             let searchItem = document.getElementById("wSearch").value;
             //check to see if textbox is empty
-            if(searchItem === "") {
+            if (searchItem === "") {
                 //if empty, page does not refresh onclick, and the bootstrap alert is triggered
-                document.getElementById("searchAction").setAttribute("onsubmit","return false")
+                document.getElementById("searchAction").setAttribute("onsubmit", "return false")
                 document.getElementById("formatError").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">\n" +
                     "<b>" + "Blank Search Box! Try again, with text..." + "\n" + "</b>" +
                     "</div>";
@@ -25,8 +25,8 @@
                 //if not empty, onsubmit is potentially removed (if it had already been triggered
                 //then the action and method is added so we can get the result
                 document.getElementById("searchAction").removeAttribute("onsubmit")
-                document.getElementById("searchAction").setAttribute("action","/getResult")
-                document.getElementById("searchAction").setAttribute("method","post")
+                document.getElementById("searchAction").setAttribute("action", "/getResult")
+                document.getElementById("searchAction").setAttribute("method", "post")
             }
         }
     </script>
@@ -34,16 +34,21 @@
 <body>
 <div class="card">
     <div class="card-body">
-        <h1 class="card-title">Wiki Search</h1>
-        <form id="searchAction">
-            <div>
-                <div id="formatError"></div>
-                <label for="wSearch">Feeling Lucky?</label>
-                <input type="search" class="form-control" id="wSearch" name="wSearch"
-                       placeholder="Search here for people, objects, events, etc">
+        <div class="container-fluid">
+            <div class="row">
+                <h1 class="card-title text-center">wiki.py Search</h1>
             </div>
-            <button type="submit" class="btn btn-primary" onclick="checkSearch()">Submit</button>
-        </form>
+                <form id="searchAction">
+                    <div id="row formatError"></div>
+                    <div class="row">
+                        <div class="col-8"><input type="search" class="form-control" id="wSearch" name="wSearch"
+                               placeholder="Search here for people, objects, events, etc"></div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary" onclick="checkSearch()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+        </div>
     </div>
 </div>
 </body>

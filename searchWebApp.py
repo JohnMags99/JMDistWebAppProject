@@ -17,7 +17,7 @@ def searchHome():
 @app.route('/getResult', methods=['POST', 'GET'])
 def getResult():
     #Public IPv4 address on EC2 connect console, needs to be reviewed each time instance is stopped and started
-    instance_ip="13.51.162.145"
+    instance_ip="13.53.193.43"
     securityKeyFile="/home/johnm/DistWebAppProj.pem"
     searchTerm=request.form.get('wSearch')
     cmd="source wiki/wiki_env/bin/activate && python3 wiki.py"  #Activating venv before executing wiki.py
@@ -42,7 +42,15 @@ def getResult():
         print("output: ")
         for items in output:
             print(items, end="")
-            lines.append(items.split('\n'))
+            lineFull = items.split('\n')
+            line=lineFull[0]
+            if not line == '':
+                #removing subtitles with no content after
+                if line.startswith("==") and (lines[-1].startswith("==")):
+                    lines.pop()
+
+                lines.append(line)
+
 
         wiki_htmlView='''
             <!DOCTYPE html> 
@@ -68,20 +76,18 @@ def getResult():
                         </div>
                     </div> 
         '''
-        # count if lines break more than once
-        lineBreak = 0
+        #Some subtitles have a line break when not needed. Tracking this to avoid printing them
         for line in lines:
-            if not line[0].startswith("Oops"):
+            if not line.startswith("Oops"):
                 #if the first line is the title/url/content line
-                if line[0].startswith("title"):
-                    lineBreak=0
+                if line.startswith("title"):
                     wiki_htmlView+='''</div><div class="card">
                                         <div class="card-body container">
                                             <div class="row">
                                                 <div class="col-10">
                                                     <h1 class="card-title">'''
                     # Split first line into title, url and content for title of card
-                    title1 = line[0].split("title:", 1)
+                    title1 = line.split("title:", 1)
                     title2 = title1[1].split("URL:", 1)
                     title3 = title2[1].split("Content:", 1)
                     wiki_htmlView+=title2[0]+'</h1>'+\
@@ -89,24 +95,24 @@ def getResult():
                                     '<div class=col><a href="'+title3[0]+'">Wiki Source</a></div></div>'+\
                                     '<br><h5 class="card-subtitle mb-2 text-muted">'+title3[1]+'</h5><br>'
 
-                #if next line is subtitle, e.g., "==sub==
-                elif line[0].startswith("=="):
-                    lineBreak=0
-                    subTitle=line[0].split("=")
-                    wiki_htmlView+='<br><br><h6 class="card-subtitle mb-2">'+subTitle[2]+'</h6>'
+                # if next line is subtitle, e.g., "==sub==
+                elif line.startswith("=="):
+                    subTitle = line.split("=")
+                    if len(subTitle) == 5:
+                        wiki_htmlView+= '<br><h4 class="card-subtitle mb-2">' + subTitle[2] + '</h4>'
+                    elif len(subTitle) == 7:
+                        wiki_htmlView += '<br><h5 class="card-subtitle mb-2">' + subTitle[3] + '</h5>'
+                    elif len(subTitle) == 9:
+                        wiki_htmlView += '<br><h6 class="card-subtitle mb-2">' + subTitle[4] + '</h6>'
 
-                #if line break
-                elif line[0] == '':
-                    lineBreak+=1
-                    if not lineBreak > 1:
-                        wiki_htmlView+='<br>'
 
                 #if standard text
                 else:
-                    lineBreak=0
-                    wiki_htmlView+='<p>'+\
-                                    line[0]+\
-                                    '</p>'
+                    wiki_htmlView += '<p>' + \
+                                     line + \
+                                     '</p>'
+
+
 
         wiki_htmlView+=''' 
                         </div>                

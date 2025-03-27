@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, url_for, flash
-from sqlalchemy.util import counter
-from werkzeug.utils import redirect
 import paramiko
 
 app = Flask(__name__)
@@ -14,7 +12,7 @@ def searchHome():
 
 
 #Result Landing Page Function
-@app.route('/getResult', methods=['POST', 'GET'])
+@app.route('/getResult', methods=['POST'])
 def getResult():
     #Public IPv4 address on EC2 connect console, needs to be reviewed each time instance is stopped and started
     instance_ip="13.53.193.43"
@@ -36,7 +34,7 @@ def getResult():
         print("ERRORS: ", outerr)
         output=stdout.readlines()
 
-        #TODO Output to HTML instead of console
+        #FIXME: Could be refactored to be more efficient with less loops and conditions
         #print result to the console (
         lines=[]
         print("output: ")

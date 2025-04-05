@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+    <link href="static/searchStyle.css" rel="stylesheet">
     <!--Error Script for submitting-->
     <script>
         function checkSearch() {
@@ -18,7 +19,7 @@
             if (searchItem === "") {
                 //if empty, page does not refresh onclick, and the bootstrap alert is triggered
                 document.getElementById("searchAction").setAttribute("onsubmit", "return false")
-                document.getElementById("formatError").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">\n" +
+                document.getElementById("formatError").innerHTML = "<div class=\"col-md-8 alert alert-danger\" role=\"alert\">\n" +
                     "<b>" + "Blank Search Box! Try again, with text..." + "\n" + "</b>" +
                     "</div>";
             } else {
@@ -30,26 +31,31 @@
             }
         }
     </script>
+
 </head>
 <body>
-<div class="card d-flex p-2">
-    <div class="card-body">
-        <div class="container-fluid">
-            <div class="row">
-                <h1 class="card-title text-center">wiki.py Search</h1>
-            </div>
-                <form id="searchAction">
-                    <div id="row formatError"></div>
-                    <div class="row">
-                        <div class="col-8"><input type="search" class="form-control" id="wSearch" name="wSearch"
-                               placeholder="Search here for people, objects, events, etc"></div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary" onclick="checkSearch()">Submit</button>
-                        </div>
-                    </div>
-                </form>
+<div class="container container-main container-format">
+
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-8">
+            <h1>wiki.py search</h1>
         </div>
     </div>
+
+    <div class="row d-flex justify-content-center align-items-center" id="formatError"></div>
+
+    <form id="searchAction">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-6">
+                <input type="search" class="form-control" id="wSearch" name="wSearch"
+                       placeholder="Search here for people, objects, events, etc">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary" onclick="checkSearch()">Submit</button>
+            </div>
+        </div>
+    </form>
+
 </div>
 </body>
 </html>

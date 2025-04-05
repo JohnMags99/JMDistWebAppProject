@@ -1,0 +1,56 @@
+@font-face {
+    font-family: Ubuntu-Regular;
+    src: url("Ubuntu-Regular.woff2") format("woff2");
+}
+
+body {
+    background: #548192;
+    font-family: Ubuntu-Regular, monospace;
+}
+
+h1 {
+    font-weight: bold;
+    color: #F8F4F9;
+    text-align: center;
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #548192;
+}
+
+div[class="card"] {
+    border: solid #D65780;
+}
+
+.inner {
+    border: solid #4D1434 !important;
+}
+
+button[type=submit] {
+    background: #548192;
+    border: none;
+}
+
+a[class="btn btn-primary"] {
+    background: #548192;
+    border: none;
+}
+
+.container-main {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container-format {
+    border: thick solid #D65780;
+    padding: 5% 5% 5% 5%;
+    background: #4D1434;
+}
+
+
+
+

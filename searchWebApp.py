@@ -6,10 +6,15 @@ app = Flask(__name__)
 app.config['ENV'] = "Development"
 app.config['DEBUG'] = True
 
+#database in the container
 db = 'CACHEDSEARCHES'
+# IP must be changed if instance is stopped and restarted
 instance_ip = '13.60.42.115'
-wiki_mysql_ip = '192.168.56.5'  # IP must be changed if instance is stopped and restarted
+#IP from host only network
+wiki_mysql_ip = '192.168.56.5'
+#Table stores top and bottom of html document to build new caches
 build_table = 'wiki_build'
+#where the cache is stored
 cache_table = 'wiki_cache'
 
 
@@ -21,6 +26,7 @@ def searchHome():
 # Result Landing Page Function
 @app.route('/getResult', methods=['POST'])
 def getResult():
+    #search term taken from search.html on submit
     search_term = request.form.get('wSearch')
     query = f"SELECT content_compress FROM {cache_table} WHERE search_term='" + search_term + "';"
     content = send_query(query, search_term, "", 1)
@@ -82,33 +88,29 @@ def send_query(query, s_id, data, to_return):
                                              database=db,
                                              user='root',
                                              password='mypassword')
-
         if connection.is_connected():
             cursor = connection.cursor()
-
             if data:
+                #clear table
                 if data == "CLEAR":
                     cursor.execute(query)
                     connection.commit()
-
+                #insert cache
                 else:
                     cursor.execute(query, (s_id, data))
                     connection.commit()
-
+            #retrieve cache
             else:
                 cursor.execute(query)
                 result = cursor.fetchone()
-
             print(f"'{query}' was sent successfully")
-
     except Error as e:
         print("Error while connecting to MySQL", e)
-
     finally:
         if connection.is_connected():
             cursor.close()
             connection.close()
-
+    #return data if specified in arguments and data is not null
     if to_return == 1:
         if result:
             return result[0]

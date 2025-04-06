@@ -1,0 +1,21 @@
+Set up your environments as follows:
+
+Virtual Machine 1 (Flask):
+* Install 'requirements.txt' when prompted in PyCharm
+* Line 10 and 11 on 'searchWebApp.py' need to be amended to use the correct IPs for the Mysql Virtual Machine and the AWS EC2 instance.
+* Flask port forward on VM1 is as follows :
+    Name	Protocol	Host IP	    Host Port	Guest IP	Guest Port
+    Flask	TCP		                8081		            8888
+* MySQL port forward is as follows :
+    Name	Protocol	Host IP	    Host Port	Guest IP	Guest Port
+    Flask	TCP		                7888		            6888
+
+Amazon EC2 Ubuntu instance:
+* Ensure Python venv is named wiki and accessible in home directory.
+* wiki.py must be located in the home directory
+* update the .pem file and username to your own in searchWebApp.py
+
+Virtual Machine 2 (mySql)
+* Import the container found under other files > VM2 (MySQL) > export.sql
+
+

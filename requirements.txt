@@ -21,3 +21,4 @@ Flask-Bcrypt==1.0.1
 mysql-connector-python==9.2.0
 #Provided Resources
 paramiko==3.5.1
+#Zlib
